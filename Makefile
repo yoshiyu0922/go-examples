@@ -6,3 +6,13 @@ help: ## help を表示する
 .PHONY:greet
 greet: ## マルチプラットフォームを考慮したサンプルプログラムを実行する
 	go run ./cmd/greet/main.go
+
+.PHONY:benchmark
+benchmark: ## ベンチマークを計測する
+	cd ./cmd/benchmark/ && \
+	go test -count 5 -benchmem -bench . 2>&1 | tee ${log}.log
+
+.PHONY:benchmark-diff
+benchmark-diff: ## ベンチマークを比較する
+	cd ./cmd/benchmark/ && \
+	go run golang.org/x/perf/cmd/benchstat@latest ${log1} ${log2}
